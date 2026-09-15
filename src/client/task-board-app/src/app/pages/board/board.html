@@ -1,3 +1,8 @@
+<form [formGroup]="newTaskForm" (ngSubmit)="addTask()" class="new-task-form">
+  <input type="text" formControlName="title" placeholder="New task title..." />
+  <button type="submit">Add Task</button>
+</form>
+
 <div class="board">
   @for (column of columns(); track column.id) {
     <div class="column">
@@ -12,7 +17,8 @@
       >
         @for (task of column.tasks; track task.id) {
           <div class="task-card" cdkDrag>
-            {{ task.title }}
+            <span>{{ task.title }}</span>
+            <button class="delete-btn" (click)="deleteTask(column.id, task.id)">✕</button>
           </div>
         }
       </div>
