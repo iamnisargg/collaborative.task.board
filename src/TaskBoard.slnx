@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/services/" />
+  <Folder Name="/services/NotificationService/">
+    <Project Path="services/NotificationService/NotificationService.Api/NotificationService.Api.csproj" />
+  </Folder>
+  <Folder Name="/services/TaskService/">
+    <Project Path="services/TaskService/TaskService.Api/TaskService.Api.csproj" />
+  </Folder>
+  <Folder Name="/shared/">
+    <Project Path="shared/TaskBoard.Contracts/TaskBoard.Contracts.csproj" />
+  </Folder>
+</Solution>
