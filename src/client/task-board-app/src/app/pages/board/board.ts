@@ -1,11 +1,12 @@
 import { Component, signal, computed } from '@angular/core';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CdkDropList, CdkDrag, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { BoardColumn } from '../../models/task.model';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [CdkDropList, CdkDrag],
+  imports: [CdkDropList, CdkDrag, ReactiveFormsModule],
   templateUrl: './board.html',
   styleUrl: './board.scss',
 })
@@ -29,8 +30,8 @@ export class Board {
       name: 'Done',
       tasks: [{ id: '4', title: 'Scaffold .NET microservices' }],
     },
-  ])
-  
+  ]);
+
   columnIds = computed(() => this.columns().map((c) => c.id));
 
   drop(event: CdkDragDrop<BoardColumn['tasks']>) {
@@ -45,5 +46,29 @@ export class Board {
       );
     }
     this.columns.set([...this.columns()]);
+  }
+
+  newTaskForm = new FormGroup({
+    title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+  });
+
+  addTask() {
+    if (this.newTaskForm.invalid) return;
+
+    const title = this.newTaskForm.controls.title.value;
+    const updated = this.columns().map((col) =>
+      col.id === 'todo'
+        ? { ...col, tasks: [...col.tasks, { id: crypto.randomUUID(), title }] }
+        : col,
+    );
+    this.columns.set(updated);
+    this.newTaskForm.reset();
+  }
+
+  deleteTask(columnId: string, taskId: string) {
+    const updated = this.columns().map((col) =>
+      col.id === columnId ? { ...col, tasks: col.tasks.filter((t) => t.id !== taskId) } : col,
+    );
+    this.columns.set(updated);
   }
 }
