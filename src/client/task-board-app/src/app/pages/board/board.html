@@ -1,1 +1,21 @@
-<p>board works!</p>
+<div class="board">
+  @for (column of columns(); track column.id) {
+    <div class="column">
+      <h3>{{ column.name }}</h3>
+      <div
+        class="task-list"
+        cdkDropList
+        [cdkDropListData]="column.tasks"
+        [cdkDropListConnectedTo]="columnIds()"
+        [id]="column.id"
+        (cdkDropListDropped)="drop($event)"
+      >
+        @for (task of column.tasks; track task.id) {
+          <div class="task-card" cdkDrag>
+            {{ task.title }}
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
